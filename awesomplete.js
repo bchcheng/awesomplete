@@ -228,7 +228,9 @@ _.prototype = {
 					text: suggestion
 				});
 
-				me.onSelect(suggestion);
+				if (typeof me.onSelect === "function") {
+					me.onSelect(suggestion);
+				}
 			}
 		}
 	},
