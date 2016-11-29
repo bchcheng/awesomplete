@@ -28,7 +28,8 @@ var _ = function (input, o) {
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
 		item: _.ITEM,
-		replace: _.REPLACE
+		replace: _.REPLACE,
+		onSelect: null
 	}, o);
 
 	this.index = -1;
@@ -204,6 +205,8 @@ _.prototype = {
 	},
 
 	select: function (selected, origin) {
+		var me = this;
+
 		if (selected) {
 			this.index = $.siblingIndex(selected);
 		} else {
@@ -224,6 +227,8 @@ _.prototype = {
 				$.fire(this.input, "awesomplete-selectcomplete", {
 					text: suggestion
 				});
+
+				me.onSelect(suggestion);
 			}
 		}
 	},
