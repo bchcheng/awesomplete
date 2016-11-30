@@ -313,6 +313,7 @@ function Suggestion(data) {
 
 	this.label = o.label || o.value;
 	this.value = o.value;
+	this.id = o.id;
 }
 Object.defineProperty(Suggestion.prototype = Object.create(String.prototype), "length", {
 	get: function() { return this.label.length; }
