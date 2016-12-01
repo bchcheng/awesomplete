@@ -229,7 +229,10 @@ _.prototype = {
 				});
 
 				if (typeof me.onSelect === "function") {
-					me.onSelect(suggestion);
+					me.onSelect({
+						label: suggestion.label,
+						value: suggestion.value,
+						id: suggestion.id}, me.input);
 				}
 			}
 		}
