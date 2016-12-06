@@ -58,9 +58,14 @@ var _ = function (input, o) {
 	// Bind events
 
 	$.bind(this.input, {
-		"input": typeof this.onInput === "function" && this.input.value.length >= this.minChars ? 
-			this.onInput.bind(this) :
-			this.evaluate.bind(this),
+		"input": () => {
+			if (typeof this.onInput === "function" && this.input.value.length >= this.minChars) {
+				this.onInput.call(this);
+			}
+			else {
+				this.evaluate.call(this);
+			}
+		},
 		"blur": this.close.bind(this, { reason: "blur" }),
 		"keydown": function(evt) {
 			var c = evt.keyCode;
