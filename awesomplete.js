@@ -29,7 +29,8 @@ var _ = function (input, o) {
 		sort: _.SORT_BYLENGTH,
 		item: _.ITEM,
 		replace: _.REPLACE,
-		onSelect: null
+		onSelect: null,
+		onInput: null,
 	}, o);
 
 	this.index = -1;
@@ -57,7 +58,9 @@ var _ = function (input, o) {
 	// Bind events
 
 	$.bind(this.input, {
-		"input": this.evaluate.bind(this),
+		"input": typeof this.onInput === "function" && this.input.value.length >= this.minChars ? 
+			this.onInput.bind(this) :
+			this.evaluate.bind(this),
 		"blur": this.close.bind(this, { reason: "blur" }),
 		"keydown": function(evt) {
 			var c = evt.keyCode;
