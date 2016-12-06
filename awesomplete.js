@@ -73,7 +73,7 @@ var _ = function (input, o) {
 			// If the dropdown `ul` is in view, then act on keydown for the following keys:
 			// Enter / Esc / Up / Down
 			if(me.opened) {
-				if (c === 13 && me.selected) { // Enter
+				if ((c === 13 || c === 9) && me.selected) { // Enter and Tab
 					evt.preventDefault();
 					me.select();
 				}
