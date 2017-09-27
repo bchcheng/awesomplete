@@ -162,11 +162,11 @@
         return;
       }
 
-      this.ul.classList.remove("slide-down");
-      this.ul.classList.add("slide-up");
+      this.ul.classList.remove("show-awesomplete");
+      this.ul.classList.add("hide-awesomplete");
       var that = this;
       setTimeout(() => {
-        that.ul.classList.remove("slide-up");
+        that.ul.classList.remove("hide-awesomplete");
       }, 400);
 
       this.ul.setAttribute("hidden", "");
@@ -177,7 +177,7 @@
     },
 
     open: function() {
-      this.ul.classList.add("slide-down");
+      this.ul.classList.add("show-awesomplete");
       this.ul.removeAttribute("hidden");
       this.isOpened = true;
 
