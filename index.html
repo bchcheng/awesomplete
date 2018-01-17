@@ -238,7 +238,7 @@ new Awesomplete(input, {
 			<tr>
 				<td><code>sort</code></td>
 				<td>Controls how list items are ordered.</td>
-				<td>Sort function (will be passed directly to <code>Array.prototype.sort()</code>) to sort the items after they have been filtered and before they are truncated and converted to HTML elements.</td>
+				<td>Sort function (will be passed directly to <code>Array.prototype.sort()</code>) to sort the items after they have been filtered and before they are truncated and converted to HTML elements. If value is <code>false</code>, sorting will be disabled.</td>
 				<td>Sorted by length first, order second.</td>
 			</tr>
 			<tr>
@@ -365,6 +365,10 @@ We can also <strong>generate list items based on user's input</strong>. See E-ma
 				<td><code>evaluate()</code></td>
 				<td>Evaluates the current state of the widget and regenerates the list of suggestions or closes the popup if none are available. You need to call it if you dynamically set <code>list</code> while the popup is open.</td>
 			</tr>
+			<tr>
+				<td><code>destroy()</code></td>
+				<td>Clean up and remove the instance from the input.</td>
+			</tr>
 		</tbody>
 	</table>
 </section>
@@ -393,6 +397,10 @@ We can also <strong>generate list items based on user's input</strong>. See E-ma
 	<pre class="language-javascript"><code><script>new Awesomplete('input[data-multiple]', {
 	filter: function(text, input) {
 		return Awesomplete.FILTER_CONTAINS(text, input.match(/[^,]*$/)[0]);
+	},
+
+	item: function(text, input) {
+		return Awesomplete.ITEM(text, input.match(/[^,]*$/)[0]);
 	},
 
 	replace: function(text) {
@@ -454,7 +462,7 @@ Awesomplete.$('.dropdown-btn').addEventListener("click", function() {
 
 <script src="prism/prism.js" defer></script>
 
-<iframe src="http://ghbtns.com/github-btn.html?user=leaverou&repo=awesomplete&type=watch&count=true&size=large" height="30" width="170" frameborder="0" scrolling="0" style="width:170px; height: 30px;" allowTransparency="true" class="github-star"></iframe>
+<iframe src="https://ghbtns.com/github-btn.html?user=leaverou&repo=awesomplete&type=watch&count=true&size=large" height="30" width="170" frameborder="0" scrolling="0" style="width:170px; height: 30px;" allowTransparency="true" class="github-star"></iframe>
 <a href="https://twitter.com/share" class="twitter-share-button" data-via="LeaVerou" data-size="large">Tweet</a>
 <script async src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=leaveroume" id="_carbonads_js"></script>
 
