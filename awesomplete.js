@@ -33,7 +33,9 @@
 			filter: _.FILTER_CONTAINS,
 			sort: o.sort === false ? false : _.SORT_BYLENGTH,
 			item: _.ITEM,
-			replace: _.REPLACE
+			replace: _.REPLACE,
+			onSelect: null,
+			onInput: null
 		}, o);
 
 		this.index = -1;
@@ -65,7 +67,13 @@
 
 		this._events = {
 			input: {
-				"input": this.evaluate.bind(this),
+				"input": () => {
+					if (typeof this.onInput === "function" && this.input.value.length >= this.minChars) {
+						this.onInput.call(this);
+					} else {
+						this.evaluate.call(this);
+					}
+				},
 				"blur": this.close.bind(this, {
 					reason: "blur"
 				}),
@@ -75,7 +83,7 @@
 					// If the dropdown `ul` is in view, then act on keydown for the following keys:
 					// Enter / Esc / Up / Down
 					if (me.opened) {
-						if (c === 13 && me.selected) { // Enter
+						if ((c === 13 || c === 9) && me.selected) { // Enter and Tab
 							evt.preventDefault();
 							me.select();
 						} else if (c === 27) { // Esc
@@ -173,6 +181,13 @@
 				return;
 			}
 
+			this.ul.classList.remove("show-awesomplete");
+			this.ul.classList.add("hide-awesomplete");
+			var that = this;
+			setTimeout(() => {
+				that.ul.classList.remove("hide-awesomplete");
+			}, 400);
+
 			this.ul.setAttribute("hidden", "");
 			this.isOpened = false;
 			this.index = -1;
@@ -181,6 +196,8 @@
 		},
 
 		open: function () {
+			this.ul.classList.add("show-awesomplete");
+
 			this.ul.removeAttribute("hidden");
 			this.isOpened = true;
 
@@ -253,6 +270,8 @@
 		},
 
 		select: function (selected, origin) {
+			var me = this;
+
 			if (selected) {
 				this.index = $.siblingIndex(selected);
 			} else {
@@ -275,6 +294,14 @@
 					$.fire(this.input, "awesomplete-selectcomplete", {
 						text: suggestion
 					});
+
+					if (typeof me.onSelect === "function") {
+						me.onSelect(me, {
+							label: suggestion.label,
+							value: suggestion.value,
+							id: suggestion.id
+						});
+					}
 				}
 			}
 		},
@@ -353,6 +380,7 @@
 		var html = input.trim() === "" ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
 		return $.create("li", {
 			innerHTML: html,
+			"data-value": html.hasOwnProperty("value") ? html.value : html,
 			"aria-selected": "false",
 			"id": "awesomplete_list_" + this.count + "_item_" + item_id
 		});
@@ -369,8 +397,7 @@
 	// Private functions
 
 	function Suggestion(data) {
-		var o = Array.isArray(data) ?
-			{
+		var o = Array.isArray(data) ? {
 				label: data[0],
 				value: data[1]
 			} :
@@ -381,6 +408,7 @@
 
 		this.label = o.label || o.value;
 		this.value = o.value;
+		this.id = o.id;
 	}
 	Object.defineProperty(Suggestion.prototype = Object.create(String.prototype), "length", {
 		get: function () {
